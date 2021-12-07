@@ -29,23 +29,31 @@ function handleClick(e) {
   const cell = e.target;
   const currentClass = circleTurn ? CIRCLE_CLASS : X_CLASS;
   placeMark(cell, currentClass);
-  //Check for win
-  //check for draw
+
+  //Check for win and draw
   if (checkWin(currentClass)) {
     endGame(false);
+  } else if (isDraw()) {
+      endGame(true);
+  } else {                    //switch turns
+    swapTurns();
+    setBoardHoverClass();
   }
-  //switch turns
-  swapTurns();
-  setBoardHoverClass();
 }
 
 function endGame(draw) {
   if (draw) {
-
+    winningMessageTextElement.innerText = 'Draw!';
   } else {
     winningMessageTextElement.innerText = `${circleTurn ? "O\'s" : "X\'s"} Wins!`
   }
   winningMessageElement.classList.add('show');
+}
+
+function isDraw() {
+  return [...cellElements].every(cell => {
+    return cell.classList.contains(X_CLASS) || cell.classList.contains(CIRCLE_CLASS)
+  })
 }
 
 function placeMark(cell, currentClass) {
