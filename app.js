@@ -13,17 +13,24 @@ const WINNING_COMBINATIONS = [
 const cellElements = document.querySelectorAll('[data-cell]');
 const board = document.getElementById('board');
 const winningMessageElement = document.getElementById('winningMessage');
+const restartButton = document.getElementById('restart-button');
 const winningMessageTextElement = document.querySelector('[data-winning-message-text]');
 let circleTurn;
 
 function startGame() {
   circleTurn = false;
   cellElements.forEach(cell => {
+    cell.classList.remove(X_CLASS);
+    cell.classList.remove(CIRCLE_CLASS);
+    cell.removeEventListener('click', handleClick);
     cell.addEventListener('click', handleClick, {once: true})
   });
   setBoardHoverClass();
+  winningMessageElement.classList.remove('show');
 }
 startGame();
+
+restartButton.addEventListener('click', startGame);
 
 function handleClick(e) {
   const cell = e.target;
